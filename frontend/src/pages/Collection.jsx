@@ -7,10 +7,50 @@ const Collection = () => {
   const { products } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const[filterProducts, setFilterProducts]= useState([]);
+  const[category, setCategory]= useState([]);
+  const[subCategory,setSubCategory]= useState([]);
+
+   const toggleCategory = (e)=>{
+    console.log(e.target.value);
+      if(category.includes(e.target.value)){
+          setCategory(prev=>prev.filter(item => item!==e.target.value))
+       }else{
+        setCategory(prev=>[...prev,e.target.value])
+       }
+   }
+
+   const toggleSubCategory = (e)=>{
+    if(subCategory.includes(e.target.value)){
+    setSubCategory(prev=>prev.filter(item=>item!=e.target.value))
+    }else{
+      setSubCategory(prev=>[...prev,e.target.value])
+    }
+   }
+//for applying  category and subcategory filter
+   const applyFilter = ()=>{
+    let productsCopy = products.slice();
+    if(category.length>0){
+      productsCopy=productsCopy.filter(item=>category.includes(item.category));
+    }
+    if(subCategory.length){
+      productsCopy=productsCopy.filter(item=>subCategory.includes(item.subCategory))
+    }
+    setFilterProducts(productsCopy);
+   }
+
+  // useEffect(()=>{
+  //   setFilterProducts(products);
+  // },[])
 
   useEffect(()=>{
-    setFilterProducts(products);
-  },[])
+    applyFilter();
+  },[category,subCategory])
+  
+  //for checking purposes
+  useEffect(()=>{
+      console.log(subCategory)
+  },[subCategory])
+
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t">
       {/*filtering option*/}
@@ -41,6 +81,7 @@ const Collection = () => {
                 className="w-4 h-4 transition ease-in-out"
                 type="checkbox"
                 value={"Men"}
+                onChange={toggleCategory}
               />
               Men
             </p>
@@ -49,6 +90,7 @@ const Collection = () => {
                 className="w-4 h-4  transition ease-in-out"
                 type="checkbox"
                 value={"Women"}
+                onChange={toggleCategory}
               />
               Women
             </p>
@@ -57,6 +99,7 @@ const Collection = () => {
                 className="w-4 h-4 accent-gray-500 border-gray-300 rounded cursor-pointer"
                 type="checkbox"
                 value={"Kid"}
+                onChange={toggleCategory}
               />
               Kid
             </p>
@@ -76,6 +119,7 @@ const Collection = () => {
                 className="w-4 h-4 transition ease-in-out"
                 type="checkbox"
                 value={"Topwear"}
+                onChange={toggleSubCategory}
               />
               Topwear
             </p>
@@ -84,6 +128,7 @@ const Collection = () => {
                 className="w-4 h-4  transition ease-in-out"
                 type="checkbox"
                 value={"Bottomwear"}
+                onChange={toggleSubCategory}
               />
               Bottomwear
             </p>
@@ -92,6 +137,7 @@ const Collection = () => {
                 className="w-4 h-4 accent-gray-500 border-gray-300 rounded cursor-pointer"
                 type="checkbox"
                 value={"Winterwear"}
+                onChange={toggleSubCategory}
               />
               Winterwear
             </p>
