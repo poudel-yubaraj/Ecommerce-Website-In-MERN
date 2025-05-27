@@ -4,7 +4,7 @@ import { assets } from "../assets/assets";
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
 const Collection = () => {
-  const { products } = useContext(ShopContext);
+  const { products, search, showSearch,} = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
@@ -31,6 +31,11 @@ const Collection = () => {
   //for applying  category and subcategory filter
   const applyFilter = () => {
     let productsCopy = products.slice();
+    if(showSearch && search){
+      productsCopy = productsCopy.filter(item=> item.name.toLowerCase().includes(search.toLowerCase()))
+
+    }
+
     if (category.length > 0) {
       productsCopy = productsCopy.filter((item) =>
         category.includes(item.category)
@@ -41,10 +46,9 @@ const Collection = () => {
         subCategory.includes(item.subCategory)
       );
     }
-  debugger;
     // Apply sorting
     if (sortType === "low-high") {
-      debugger;
+      
       console.log("from low to high");
       productsCopy.sort((a, b) => a.price - b.price);
     } else if (sortType === "high-low") {
@@ -61,7 +65,7 @@ const Collection = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory,sortType]);
+  }, [category, subCategory,sortType,search,showSearch]);
 
   //for checking purposes
   useEffect(() => {
