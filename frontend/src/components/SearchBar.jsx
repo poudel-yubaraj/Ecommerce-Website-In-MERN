@@ -10,20 +10,19 @@ const SearchBar = () => {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate(); // ✅ Use the hook to get navigate function
 
-
   useEffect(() => {
     // for checking purposes
-      console.log(location.pathname);
-    if (location.pathname.includes('collection')) {
+    console.log(location.pathname);
+    if (location.pathname.includes("collection")) {
       setVisible(true);
     } else {
-      setVisible(false);   
-        
+      setVisible(false);
     }
-    if(showSearch==true && visible==false){
-       navigate('/collection');
+    
+    if (showSearch == true && visible == false) {
+      navigate("/collection");
     }
-  }, [location.pathname,showSearch]);
+  }, [location.pathname, showSearch]);
 
   return visible && showSearch ? (
     <div className="bg-gray-100 border-t border-b text-center">
